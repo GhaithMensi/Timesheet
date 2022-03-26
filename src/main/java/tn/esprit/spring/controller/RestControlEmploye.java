@@ -3,6 +3,8 @@ package tn.esprit.spring.controller;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,9 +25,9 @@ import tn.esprit.spring.models.EmployeModel;
 import tn.esprit.spring.services.IEmployeService;
 import tn.esprit.spring.services.IEntrepriseService;
 import tn.esprit.spring.services.ITimesheetService;
-
 @RestController
 public class RestControlEmploye {
+	private static final Logger logger = LogManager.getLogger(RestControlEmploye.class);
 
 	@Autowired
 	IEmployeService iemployeservice;
@@ -110,7 +112,7 @@ public class RestControlEmploye {
     @GetMapping(value = "getNombreEmployeJPQL")
     @ResponseBody
 	public int getNombreEmployeJPQL() {
-		
+		logger.info("Searching for employe number");
 		return iemployeservice.getNombreEmployeJPQL();
 	}
 
@@ -118,7 +120,8 @@ public class RestControlEmploye {
     @GetMapping(value = "getAllEmployeNamesJPQL")
     @ResponseBody
 	public List<String> getAllEmployeNamesJPQL() {
-		
+		logger.info("Searching for all employees names");
+
 		return iemployeservice.getAllEmployeNamesJPQL();
 	}
 
@@ -127,6 +130,8 @@ public class RestControlEmploye {
     @ResponseBody
 	public List<Employe> getAllEmployeByEntreprise(@PathVariable("identreprise") int identreprise) {
     	Entreprise entreprise=ientrepriseservice.getEntrepriseById(identreprise);
+		logger.info("Searching for  employees which belong to the entreprise " + entreprise.getName());
+
 		return iemployeservice.getAllEmployeByEntreprise(entreprise);
 	}
 

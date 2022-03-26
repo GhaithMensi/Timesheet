@@ -26,7 +26,6 @@ import tn.esprit.spring.services.IEmployeService;
 @ELBeanName(value = "employeController")
 @Join(path = "/", to = "/login.jsf")
 public class ControllerEmployeImpl  {
-
 	@Autowired
 	IEmployeService employeService;
 

@@ -6,10 +6,13 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import tn.esprit.spring.controller.RestControlEmploye;
 import tn.esprit.spring.entities.Contrat;
 import tn.esprit.spring.entities.Departement;
 import tn.esprit.spring.entities.Employe;
@@ -24,6 +27,7 @@ import tn.esprit.spring.repository.TimesheetRepository;
 
 @Service
 public class EmployeServiceImpl implements IEmployeService {
+	private static final Logger logger = LogManager.getLogger(EmployeServiceImpl.class);
 
 	@Autowired
 	EmployeRepository employeRepository;
@@ -36,6 +40,7 @@ public class EmployeServiceImpl implements IEmployeService {
 
 	@Override
 	public Employe authenticate(String login, String password) {
+		logger.info("logging in .....");
 		return employeRepository.findByEmailAndPassword(login, password);
 	}
 
@@ -62,6 +67,9 @@ public class EmployeServiceImpl implements IEmployeService {
 	public void affecterEmployeADepartement(int employeId, int depId) {
 		Optional<Departement> optionalDepartement = deptRepoistory.findById(depId);
 		Optional<Employe> optionalEmpt = employeRepository.findById(employeId);
+			
+		logger.debug("Departement" + optionalDepartement);
+		logger.debug("Employe" + optionalEmpt);
 
 
 		if (optionalDepartement.isPresent() && optionalEmpt.isPresent()) {
@@ -69,7 +77,8 @@ public class EmployeServiceImpl implements IEmployeService {
 			Employe employeManagedEntity = optionalEmpt.get();
 
 			if (depManagedEntity.getEmployes() == null) {
-
+				
+				logger.info("departement  "+ depManagedEntity.getName() + " doesnt have any employees");
 				List<Employe> employes = new ArrayList<>();
 				employes.add(employeManagedEntity);
 				depManagedEntity.setEmployes(employes);
@@ -78,7 +87,7 @@ public class EmployeServiceImpl implements IEmployeService {
 				depManagedEntity.getEmployes().add(employeManagedEntity);
 			}
 
-			// à ajouter?
+			logger.info("employe "+ employeManagedEntity.getEmail() + " affected to departement " + depManagedEntity );
 			deptRepoistory.save(depManagedEntity);
 		}
 
@@ -115,6 +124,7 @@ public class EmployeServiceImpl implements IEmployeService {
 			contratManagedEntity.setEmploye(employeManagedEntity);
 			contratRepoistory.save(contratManagedEntity);
 		}
+		logger.error("Contract or Employedoesnt exist");
 
 	}
 
@@ -137,15 +147,15 @@ public class EmployeServiceImpl implements IEmployeService {
 		if (optionalEmploye.isPresent()) {
 			Employe employe = optionalEmploye.get();
 
-			// Desaffecter l'employe de tous les departements
-			// c'est le bout master qui permet de mettre a jour
-			// la table d'association
+			logger.info("Desaffecter l'employe de tous les departements c'est le bout master qui permet de mettre a jour la table dassociation");
 			for (Departement dep : employe.getDepartements()) {
 				dep.getEmployes().remove(employe);
 			}
 
 			employeRepository.delete(employe);
 		}
+		logger.error("Employe doesnt exist");
+
 	}
 
 	public void deleteContratById(int contratId) {
@@ -155,6 +165,7 @@ public class EmployeServiceImpl implements IEmployeService {
 		Contrat contratManagedEntity = optionalContrat.get();
 		contratRepoistory.delete(contratManagedEntity);
 		}
+		logger.error("Contract doesnt exist");
 
 	}
 
