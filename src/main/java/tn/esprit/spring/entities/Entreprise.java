@@ -12,7 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-@Entity
+//@Entity//
 public class Entreprise implements Serializable{
 	
 	/**
@@ -34,6 +34,7 @@ public class Entreprise implements Serializable{
 			cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, 
 			fetch=FetchType.EAGER)
 	private List<Departement> departements = new ArrayList<>();
+	
 
 	public Entreprise() {
 		super();
@@ -84,5 +85,9 @@ public class Entreprise implements Serializable{
 
 
 
-
 }
+
+
+
+
+
