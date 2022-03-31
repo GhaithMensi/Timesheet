@@ -2,9 +2,13 @@ package tn.esprit.spring;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import tn.esprit.spring.entities.Departement;
 import tn.esprit.spring.entities.Employe;
@@ -13,7 +17,8 @@ import tn.esprit.spring.repository.DepartementRepository;
 import tn.esprit.spring.repository.EntrepriseRepository;
 import tn.esprit.spring.services.IDepartementService;
 import tn.esprit.spring.services.IEntrepriseService;
-
+@RunWith(SpringRunner.class )
+@SpringBootTest
 public class EntrepriseServiceImpTest {
 	
 	@Autowired
@@ -21,6 +26,7 @@ public class EntrepriseServiceImpTest {
 
 	@Autowired
 	EntrepriseRepository entrepriseRepository;
+
 	
 	
 	
@@ -42,8 +48,8 @@ public class EntrepriseServiceImpTest {
 	
 	@Test
 	public void TestdeleteEntrepriseById() {
-		entrepriseService.deleteEntrepriseById(1);
-		assertThat(entrepriseRepository.existsById(1)).isFalse();
+		entrepriseService.deleteEntrepriseById(4);
+		assertThat(entrepriseRepository.existsById(4)).isFalse();
 	}
 
 
