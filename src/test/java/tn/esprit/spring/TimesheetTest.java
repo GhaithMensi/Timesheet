@@ -21,6 +21,7 @@ import tn.esprit.spring.entities.Timesheet;
 import tn.esprit.spring.repository.EmployeRepository;
 import tn.esprit.spring.repository.MissionRepository;
 import tn.esprit.spring.repository.TimesheetRepository;
+import tn.esprit.spring.services.ITimesheetService;
 import tn.esprit.spring.services.TimesheetServiceImpl;
 @RunWith(SpringRunner.class )
 @SpringBootTest
@@ -41,8 +42,9 @@ public class TimesheetTest {
 
     @Test
     public void TestfindAllMissionByEmployeJPQL() {
-
-        List<timesheetService> list = timesheetService.findAllMissionByEmployeJPQL(employeId);
+ 		Employe emp = new Employe(1, "X", "X", "X", "X", true, null);
+ 		employeRepository.save(emp);
+        List<Mission> list = timesheetService.findAllMissionByEmployeJPQL(1);
         assertThat(list).size().isGreaterThan(0);
     }
     
