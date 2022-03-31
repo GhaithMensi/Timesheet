@@ -28,7 +28,7 @@ public class DepartementTest {
 
     @Test
     public void TestgetAllDepartements(){
-        List<Departement> list = DepartementService.getAllDepartements();
+        List<Departement> list = departementService.getAllDepartements();
         assertThat(list).size().isGreaterThan(0);
     }
 
