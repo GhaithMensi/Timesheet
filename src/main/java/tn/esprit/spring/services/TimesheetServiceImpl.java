@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -40,10 +41,14 @@ public class TimesheetServiceImpl implements ITimesheetService {
 	}
     
 	public void affecterMissionADepartement(int missionId, int depId) {
-		Mission mission = missionRepository.findById(missionId).get();
-		Departement dep = deptRepoistory.findById(depId).get();
+		
+		Optional<Mission> optmis=missionRepository.findById(missionId);
+		Optional<Departement> optdep=deptRepoistory.findById(depId);
+		if ((optmis.isPresent()) && (optdep.isPresent())) { 
+		Mission mission = optmis.get();
+		Departement dep = optdep.get();
 		mission.setDepartement(dep);
-		missionRepository.save(mission);
+		missionRepository.save(mission);}
 		
 	}
 
@@ -64,8 +69,11 @@ public class TimesheetServiceImpl implements ITimesheetService {
 	
 	public void validerTimesheet(int missionId, int employeId, Date dateDebut, Date dateFin, int validateurId) {
 		logger.info("In valider Timesheet");
-		Employe validateur = employeRepository.findById(validateurId).get();
-		Mission mission = missionRepository.findById(missionId).get();
+		Optional<Employe> optval=employeRepository.findById(validateurId);
+		Optional<Mission> optmis=missionRepository.findById(missionId);
+		if ((optval.isPresent()) && (optmis.isPresent())) {
+		Employe validateur = optval.get();
+		Mission mission = optmis.get();
 		//verifier s'il est un chef de departement (interet des enum)
 		if(!validateur.getRole().equals(Role.CHEF_DEPARTEMENT)){
 			logger.info("l'employe doit etre chef de departement pour valider une feuille de temps !");
@@ -91,7 +99,7 @@ public class TimesheetServiceImpl implements ITimesheetService {
 		//Comment Lire une date de la base de données
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 		logger.info("dateDebut : " + dateFormat.format(timesheet.getTimesheetPK().getDateDebut()));
-		
+	}
 	}
 
 	

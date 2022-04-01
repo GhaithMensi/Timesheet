@@ -10,7 +10,7 @@ import tn.esprit.spring.entities.Mission;
 public class DepartementModel {
 	
     private int id;	
-	private String name;
+
 	private List<Employe> employes;
 	private List<Mission> missions;
 	private Entreprise entreprise;
