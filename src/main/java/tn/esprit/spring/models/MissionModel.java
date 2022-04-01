@@ -4,12 +4,10 @@ package tn.esprit.spring.models;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.persistence.Entity;
 import tn.esprit.spring.entities.Departement;
 import tn.esprit.spring.entities.Mission;
 import tn.esprit.spring.entities.Timesheet;
 
-@Entity
 public class MissionModel implements Serializable {
 
 	private static final long serialVersionUID = -5369734855993305723L;
